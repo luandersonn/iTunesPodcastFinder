@@ -31,7 +31,8 @@ namespace iTunesPodcastFinder
 				podcast.Name = entry["collectionName"].ToString();
 				podcast.ItunesLink = entry["collectionViewUrl"].ToString();
 				podcast.FeedUrl = entry["feedUrl"].ToString();
-				podcast.ReleaseDate = entry["releaseDate"].ToObject<DateTime>();
+				DateTime.TryParse(entry["releaseDate"] + "", out DateTime releaseDate);
+				podcast.ReleaseDate = releaseDate;
 				podcast.EpisodesCount = entry["trackCount"].ToObject<int>();
 				podcast.Genre = entry["primaryGenreName"].ToString();
 				podcast.ArtWork = entry["artworkUrl600"].ToString();
@@ -47,7 +48,7 @@ namespace iTunesPodcastFinder
 				Podcast podcast = new Podcast();
 				podcast.Name = entry["im:name"]["label"].ToString();
 				podcast.ArtWork = entry["im:image"][2]["label"].ToString();
-				podcast.Summary = entry["summary"]["label"].ToString();
+				podcast.Summary = entry["summary"]?["label"]?.ToString();
 				podcast.ItunesLink = entry["link"]["attributes"]["href"].ToString();
 				podcast.Editor = entry["im:artist"]["label"].ToString();
 				podcast.Genre = entry["category"]["attributes"]["label"].ToString();
