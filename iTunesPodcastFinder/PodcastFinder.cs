@@ -26,7 +26,7 @@ namespace iTunesPodcastFinder
 			if (queryTerm == null)
 				throw new ArgumentNullException(nameof(queryTerm));
 			if (maxItems < 1)
-				throw new ArgumentException("The maximum number of items must be greater than one", nameof(maxItems));
+				throw new ArgumentException("The maximum number of items must be greater than zero", nameof(maxItems));
 			if (country == null)
 				throw new ArgumentNullException(nameof(country));			
 			Uri url = new Uri(string.Format(base_search_url, queryTerm, country, maxItems));
@@ -64,7 +64,7 @@ namespace iTunesPodcastFinder
 			if (country == null)			
 				throw new ArgumentNullException(nameof(country));
 			if (maxItems < 1)
-				throw new ArgumentException("The maximum number of items must be greater than one", nameof(maxItems));
+				throw new ArgumentException("The maximum number of items must be greater than zero", nameof(maxItems));
 
 			Uri url = new Uri(string.Format(base_top_url, country, maxItems, (int)genre));
 			string json = await WebRequestAsync(url);
