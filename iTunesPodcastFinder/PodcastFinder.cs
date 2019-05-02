@@ -84,6 +84,21 @@ namespace iTunesPodcastFinder
 			return Regex.Match(itunesLink, @"/id(?<ID>(\d)+)").Groups["ID"].Value;
 		}
 
+		/// <summary>
+		/// Get a list of episodes from a podcast
+		/// </summary>
+		/// <param name="feedUrl">The podcast RSS feed</param>
+		/// <returns>List of podcast episodes</returns>
+		public async Task<IEnumerable<PodcastEpisode>> GetPodcastEpisodesAsync(string feedUrl)
+		{
+			if (feedUrl == null)	
+				throw new ArgumentNullException(nameof(feedUrl));
+			Uri url = new Uri(feedUrl);
+
+			string xml = await WebRequestAsync(url);
+			return XmlHelper.ParseEpisodes(xml);
+		}
+
 		private async Task<string> WebRequestAsync(Uri url)
 		{
 			HttpClient httpClient = new HttpClient();								
