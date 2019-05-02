@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
-namespace iTunesPodcastFinder
+namespace iTunesPodcastFinder.Helpers
 {
 	internal static class JsonHelper
 	{

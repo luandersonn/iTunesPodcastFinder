@@ -1,4 +1,5 @@
-﻿using iTunesPodcastFinder.Models;
+﻿using iTunesPodcastFinder.Helpers;
+using iTunesPodcastFinder.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
