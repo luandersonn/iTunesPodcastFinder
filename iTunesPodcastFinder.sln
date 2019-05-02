@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTunesPodcastFinder", "iTunesPodcastFinder\iTunesPodcastFinder.csproj", "{3C2131D8-6440-4E68-B20A-09F8DA48F0E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTunesPodcastFinder.Test", "iTunesPodcastFinder.Test\iTunesPodcastFinder.Test.csproj", "{CA7DAA8F-2E92-4BEE-A18F-86BB7B7BCDAA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C2131D8-6440-4E68-B20A-09F8DA48F0E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C2131D8-6440-4E68-B20A-09F8DA48F0E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C2131D8-6440-4E68-B20A-09F8DA48F0E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C2131D8-6440-4E68-B20A-09F8DA48F0E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA7DAA8F-2E92-4BEE-A18F-86BB7B7BCDAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA7DAA8F-2E92-4BEE-A18F-86BB7B7BCDAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA7DAA8F-2E92-4BEE-A18F-86BB7B7BCDAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA7DAA8F-2E92-4BEE-A18F-86BB7B7BCDAA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B3357FBD-935B-4B8D-AD37-683504630E55}
+	EndGlobalSection
+EndGlobal
