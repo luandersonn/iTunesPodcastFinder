@@ -18,13 +18,12 @@ namespace iTunesPodcastFinder.Test
 		[Test]
 		public void ValidSearch()
 		{
-			int maxItems = new Random().Next(10, 201);
+			int maxItems = 50;
 			IEnumerable<Podcast> result = finder.SearchPodcastsAsync("The Verge", maxItems).Result;
 			Assert.IsTrue(result.Any());
 			Assert.IsTrue(result.Any(x => x.Editor == "The Verge"));
 			Assert.LessOrEqual(result.Count(), maxItems);
-
-			maxItems = new Random().Next(10, 201);
+			
 			result = finder.SearchPodcastsAsync("Manual", maxItems).Result;
 			Assert.IsTrue(result.Any());
 			Assert.IsTrue(result.Any(x => x.Editor == "Manual do Usuário"));

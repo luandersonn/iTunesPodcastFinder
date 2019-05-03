@@ -30,7 +30,7 @@ namespace iTunesPodcastFinder.Helpers
 				podcast.Editor = entry["artistName"].ToString();
 				podcast.Name = entry["collectionName"].ToString();
 				podcast.ItunesLink = entry["collectionViewUrl"].ToString();
-				podcast.FeedUrl = entry["feedUrl"].ToString();
+				podcast.FeedUrl = entry["feedUrl"]?.ToString();
 				DateTime.TryParse(entry["releaseDate"] + "", out DateTime releaseDate);
 				podcast.ReleaseDate = releaseDate;
 				podcast.EpisodesCount = entry["trackCount"].ToObject<int>();
