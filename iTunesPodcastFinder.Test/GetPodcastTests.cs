@@ -20,10 +20,10 @@ namespace iTunesPodcastFinder.Test
 		public void IDExtraction()
 		{
 			string url1 = @"https://podcasts.apple.com/br/podcast/mamilos/id942491627?uo=2";
-			string id1 = finder.GetItunesID(url1);
+			string id1 = PodcastFinder.GetItunesID(url1);
 
 			string url2 = "https://podcasts.apple.com/br/podcast/xadrez-verbal/id996967108?uo=2";
-			string id2 = finder.GetItunesID(url2);
+			string id2 = PodcastFinder.GetItunesID(url2);
 
 			Assert.AreEqual("942491627", id1);
 			Assert.AreEqual("996967108", id2);

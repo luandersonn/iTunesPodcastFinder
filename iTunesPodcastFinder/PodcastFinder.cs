@@ -77,7 +77,7 @@ namespace iTunesPodcastFinder
 		/// </summary>
 		/// <param name="itunesLink">Podcast URL from iTunes</param>
 		/// <returns>Podcast ID from iTunes</returns>
-		public string GetItunesID(string itunesLink)
+		public static string GetItunesID(string itunesLink)
 		{
 			if (itunesLink == null)
 				throw new ArgumentNullException(nameof(itunesLink));
