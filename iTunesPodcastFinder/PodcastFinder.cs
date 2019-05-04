@@ -56,11 +56,11 @@ namespace iTunesPodcastFinder
 		/// <summary>
 		/// Get a list of top podcasts
 		/// </summary>
-		/// <param name="country">Two-letter country code (ISO 3166-1 alpha-2)</param>
-		/// <param name="maxItems">Maximum number of items you want to retrieve</param>
 		/// <param name="genre">Podcast genre</param>
+		/// <param name="country">Two-letter country code (ISO 3166-1 alpha-2)</param>
+		/// <param name="maxItems">Maximum number of items you want to retrieve</param>		
 		/// <returns>list of top podcasts</returns>
-		public async Task<IEnumerable<Podcast>> GetTopPodcastsAsync(string country = "us", int maxItems = 100, PodcastGenre genre = PodcastGenre.All)
+		public async Task<IEnumerable<Podcast>> GetTopPodcastsAsync(PodcastGenre genre = PodcastGenre.All, int maxItems = 100, string country = "us")
 		{
 			if (country == null)			
 				throw new ArgumentNullException(nameof(country));

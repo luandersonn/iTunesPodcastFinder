@@ -61,7 +61,7 @@ namespace iTunesPodcastFinder.Test
 
 			foreach(PodcastGenre genre in GetGenres())
 			{
-				IEnumerable<Podcast> podcasts = finder.GetTopPodcastsAsync("br", 50, genre).Result;
+				IEnumerable<Podcast> podcasts = finder.GetTopPodcastsAsync(genre, 50, "br").Result;
 				Assert.AreEqual(50, podcasts.Count());
 			}
 		}
