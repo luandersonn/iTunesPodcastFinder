@@ -2,9 +2,9 @@
 <h2>Features</h2>
 
 - [Search podcasts from iTunes](#search)
-- [Get the list of the most popular podcasts by country and genre](#Get%20top%20podcasts)
-- [Get podcast by iTunes ID](#Get%20a%20podcast%20by%20iTunes%20ID)
-- [Get podcast episodes from the RSS feed URL](#Get%20podcasts%20episodes%20by%20RSS%20feed%20link)
+- [Get the list of the most popular podcasts by country and genre](#get-top-podcasts)
+- [Get podcast by iTunes ID](#get-a-podcast-by-itunes-id)
+- [Get podcast episodes from the RSS feed URL](#get-podcasts-episodes-by-rss-feed-link)
 
 <h2>How to use</h2>
 
