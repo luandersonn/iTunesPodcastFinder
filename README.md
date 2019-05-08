@@ -1,12 +1,12 @@
 # iTunes Podcast Finder
-<h2>Features</h2>
+## Features
 
 - [Search podcasts from iTunes](#search)
 - [Get the list of the most popular podcasts by country and genre](#get-top-podcasts)
 - [Get podcast by iTunes ID](#get-a-podcast-by-itunes-id)
 - [Get podcast episodes from the RSS feed URL](#get-podcasts-episodes-by-rss-feed-link)
 
-<h2>How to use</h2>
+## How to use
 
 ```C#
 PodcastFinder finder = new PodcastFinder();
@@ -24,7 +24,7 @@ foreach (Podcast podcast in results)
 }		
 ```
 
-<h4>Optimized search for another country</h4>
+#### Optimized search for another country
 
 ```C#
 int maxItems = 30; // Min:1 - max:200
