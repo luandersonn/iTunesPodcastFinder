@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Luandersonn.iTunesPodcastFinder</id>
+    <version>$version$</version>
+    <title>iTunes Podcast Finder</title>
+    <authors>Luandersonn Airton</authors>
+    <owners>Luandersonn Airton</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/luandersonn/iTunesPodcastFinder</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/luandersonn/iTunesPodcastFinder/master/iTunesPodcastFinder/iTunes-logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>iTunes Podcast Finder is a .NET Standard 2.0 library that allows you to search for podcasts through the iTunes API and get episodes of podcasts from the RSS feed.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Luandersonn Airton - Copyright 2019</copyright>
+    <tags>iTunes Podcast RSS Parse Wrapper</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="12.0.2" />
+    </dependencies>
+  </metadata>
+</package>
