@@ -5,7 +5,7 @@
 iTunes Podcast Finder is a .NET Standard 2.0 library that allows you to search for podcasts through the iTunes API and get episodes of podcasts from the RSS feed. Get the [Nuget package](https://www.nuget.org/packages/Luandersonn.iTunesPodcastFinder/).
 
 ```
-PM> Install-Package Luandersonn.iTunesPodcastFinder -Version 1.0.0
+PM> Install-Package Luandersonn.iTunesPodcastFinder
 ```
 
 ## Features
