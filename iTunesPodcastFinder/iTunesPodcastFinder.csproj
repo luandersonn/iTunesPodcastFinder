@@ -8,8 +8,11 @@
     <Copyright>Luandersonn Airton - Copyright 2019</Copyright>
     <PackageProjectUrl>https://github.com/luandersonn/iTunesPodcastFinder</PackageProjectUrl>
     <PackageTags>iTunes Podcast RSS Parse Wrapper</PackageTags>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Get a podcast and episodes from RSS feed URL</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.0.0</Version>
+    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
