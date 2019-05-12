@@ -7,126 +7,182 @@ using System.Xml;
 
 namespace iTunesPodcastFinder.Helpers
 {
-	internal static class XmlHelper
-	{
-		public static IEnumerable<PodcastEpisode> ParseEpisodes(string xml)
-		{
-			(XmlNodeList entries, FeedType type) = GetXmlNodeList(xml);
-			switch (type)
-			{
-				case FeedType.Atom:
-					throw new NotSupportedException("Parse episodes from a AtomFeed is not supported");
+    internal static class XmlHelper
+    {
+        public static PodcastRequestResult ParsePodcast(string xml)
+        {
+            // Load xml
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(xml);
+            // Get feedType
+            FeedType feedType = GetFeedType(xmlDocument);
 
-				case FeedType.Rss1:
-					if (entries[0] is XmlElement entry)
-					{
-						var items = entry.GetElementsByTagName("item");
+            switch (feedType)
+            {
+                case FeedType.Atom:
+                    return ParseAtom(xmlDocument);
+                case FeedType.Rss1:
+                    return ParseRss1(xmlDocument);
+                case FeedType.Rss2:
+                    return ParseRss2(xmlDocument);
+                default:
+                    // Impossible situation
+                    throw new Exception();
+            }
+        }
 
-						foreach (XmlNode item in items)
-						{
-							PodcastEpisode episode = new PodcastEpisode();
-							episode.Editor = GetXmlElementValue(entry, "author");
-							episode.Title = GetXmlElementValue(item, "title");
-							episode.Summary = GetXmlElementValue(item, "description");
-							episode.FileUrl = new Uri(GetXmlElementValue(item, "link"));
-							DateTime.TryParse(GetXmlElementValue(item, "pubDate"), out DateTime pubDate);
-							episode.PublishedDate = pubDate;
-							yield return episode;
-						}
-					}
-					break;
+        private static FeedType GetFeedType(XmlDocument xmlDocument)
+        {
+            string rssVersion = xmlDocument.GetElementsByTagName("rss").Item(0)?.Attributes["version"].Value;
+            switch (rssVersion)
+            {
+                case "1.0":
+                    return FeedType.Rss1;
+                case "2.0":
+                    return FeedType.Rss2;
+                default:
+                    return FeedType.Atom;
+            }
+        }
 
-				case FeedType.Rss2:
-					entry = entries[0] as XmlElement;
-					if (entry != null)
-					{
-						var items = entry.GetElementsByTagName("item");
-						foreach (XmlNode item in items)
-						{
-							PodcastEpisode episode = new PodcastEpisode();
-							episode.Editor = GetXmlElementValue(entry, "title");
-							episode.Title = GetXmlElementValue(item, "title");
-							episode.Summary = GetXmlElementValue(item, "description");
-							string link = GetXmlElementValue(item, "link");
-							if (item["enclosure"] != null)
-							{
-								link = GetXmlAttribute(item["enclosure"], "url");
-							}
-							episode.FileUrl = new Uri(link);
-							string date = GetXmlElementValue(item, "pubDate");
-							DateTime.TryParse(date, out DateTime pubDate);
-							episode.PublishedDate = pubDate;
+        // ATOM
+        private static PodcastRequestResult ParseAtom(XmlDocument xmlDocument)
+        {
+            XmlElement feedNode = xmlDocument["feed"];
 
-							try
-							{
-								string durationString = GetXmlElementValue(item, "itunes:duration");
-								episode.Duration = TimeSpan.Parse(durationString).TotalSeconds;
-							}
-							catch { }
-							yield return episode;
-						}
-					}
-					break;
-			}
-		}
-										
-		private static (XmlNodeList, FeedType) GetXmlNodeList(string xml)
-		{
-			var feedType = GetFeedType(xml);
-			switch (feedType)
-			{
-				case FeedType.Atom:
-					var doc = new XmlDocument();
-					doc.LoadXml(xml);
-					var feedNode = doc["feed"];
-					return (feedNode.GetElementsByTagName("entry"), feedType);
-				case FeedType.Rss1:
-				case FeedType.Rss2:
-					var xmlDocument = new XmlDocument();
-					var bytes = Encoding.UTF8.GetBytes(xml);
-					using (var stream = new MemoryStream(bytes))
-						xmlDocument.Load(stream);
-					return (xmlDocument.GetElementsByTagName("channel"), feedType);
-				default:
-					throw new InvalidOperationException("Could not determine feed type");
-			}
-		}
+            Podcast podcast = new Podcast();
+            podcast.Name = GetXmlElementValue(feedNode, "title");
+            podcast.ArtWork = GetXmlElementValue(feedNode, "icon");
+            XmlNodeList entries = feedNode.GetElementsByTagName("entry");
+            podcast.EpisodesCount = entries.Count;
+            return new PodcastRequestResult(podcast, GetAtomEpisodes(entries));
+        }
+        private static IEnumerable<PodcastEpisode> GetAtomEpisodes(XmlNodeList entries)
+        {
+            int episodeNumber = entries.Count;
+            foreach (XmlNode entry in entries)
+            {
+                PodcastEpisode episode = new PodcastEpisode();
+                episode.EpisodeNumber = episodeNumber--;
+                episode.Title = GetXmlElementValue(entry, "title");
+                episode.Summary = GetXmlElementValue(entry, "summary");
+                DateTime.TryParse(GetXmlElementValue(entry, "updated"), out DateTime pub);
+                episode.PublishedDate = pub;
+                episode.FileUrl = new Uri(GetXmlAttribute(entry["link"], "href"));
+                yield return episode;
+            }
+        }
 
-		private static FeedType GetFeedType(string xml)
-		{
-			FeedType type = FeedType.Atom;
-			var doc = new XmlDocument();
-			doc.LoadXml(xml);
-			var rssTags = doc.GetElementsByTagName("rss");
-			if (rssTags != null && rssTags.Count > 0)
-			{
-				string rssVersion = rssTags[0].Attributes["version"].Value;
-				if (rssVersion == "1.0")				
-					type = FeedType.Rss1;				
-				if (rssVersion == "2.0")				
-					type = FeedType.Rss2;				
-			}
-			return type;
-		}
+        // RSS1.0
+        private static PodcastRequestResult ParseRss1(XmlDocument xmlDocument)
+        {
+            XmlElement channel = xmlDocument.GetElementsByTagName("channel").Item(0) as XmlElement;
 
-		private static string GetXmlElementValue(XmlNode parentNode, string elementName)
-		{
-			string value = string.Empty;
-			if (parentNode[elementName] != null)			
-				value = parentNode[elementName].InnerText;			
-			return value;
-		}
-		private static string GetXmlAttribute(XmlNode xmlNode, string attributeName)
-		{
-			string attribute = string.Empty;
-			if (xmlNode != null && xmlNode.Attributes != null && xmlNode.Attributes[attributeName] != null)
-			{
-				string value = xmlNode.Attributes[attributeName].Value;
-				if (!string.IsNullOrEmpty(value))				
-					attribute = value;				
-			}
-			return attribute;
-		}
+            Podcast podcast = new Podcast();
+            podcast.Name = GetXmlElementValue(channel, "title");
+            podcast.Summary = GetXmlElementValue(channel, "description");
+            podcast.ItunesLink = GetXmlElementValue(channel, "link");
+            var entries = channel.GetElementsByTagName("item");
+            podcast.EpisodesCount = entries.Count;
+            return new PodcastRequestResult(podcast, GetRSS1Episodes(entries));
+        }
+        private static IEnumerable<PodcastEpisode> GetRSS1Episodes(XmlNodeList entries)
+        {
+            int episodeNumber = entries.Count;
+            foreach (XmlNode entry in entries)
+            {
+                PodcastEpisode episode = new PodcastEpisode();
+                episode.EpisodeNumber = episodeNumber--;
+                episode.Editor = GetXmlElementValue(entry, "author");
+                episode.Title = GetXmlElementValue(entry, "title");
+                episode.Summary = GetXmlElementValue(entry, "description");
+                episode.FileUrl = new Uri(GetXmlElementValue(entry, "link"));
+                DateTime.TryParse(GetXmlElementValue(entry, "pubDate"), out DateTime pubDate);
+                episode.PublishedDate = pubDate;
+                yield return episode;
+            }
+        }
 
-	}
+        // RSS2.0
+        private static PodcastRequestResult ParseRss2(XmlDocument xmlDocument)
+        {
+            XmlElement channel = xmlDocument.GetElementsByTagName("channel").Item(0) as XmlElement;
+
+            Podcast podcast = new Podcast();
+            podcast.Name = GetXmlElementValue(channel, "title");
+            podcast.Editor = channel.GetElementsByTagName("itunes:author")?.Item(0)?.InnerText;
+            podcast.ItunesLink = GetXmlElementValue(channel, "link");
+            podcast.Summary = GetXmlElementValue(channel, "description");
+            DateTime.TryParse(GetXmlElementValue(channel, "pubDate"), out DateTime pub);
+            podcast.ReleaseDate = pub;
+            string image = channel.GetElementsByTagName("itunes:image")?.Item(0)?.Attributes.Item(0)?.Value;
+            podcast.Genre = channel.GetElementsByTagName("itunes:category")?.Item(0)?.Attributes.Item(0)?.Value;
+
+            if (image == "")
+            {
+                var imageNodes = channel.GetElementsByTagName("image");
+                if (imageNodes.Count > 0)
+                {
+                    var imageNode = imageNodes[0];
+                    image = GetXmlElementValue(imageNode, "url");
+                }
+            }
+            podcast.ArtWork = image;
+            XmlNodeList entries = channel.GetElementsByTagName("item");
+            podcast.EpisodesCount = entries.Count;
+            return new PodcastRequestResult(podcast, GetRSS2Episodes(entries, podcast.Editor));
+
+        }
+
+        private static IEnumerable<PodcastEpisode> GetRSS2Episodes(XmlNodeList entries, string editor)
+        {
+            int episodeNumber = entries.Count;
+            foreach (XmlNode entry in entries)
+            {
+                PodcastEpisode episode = new PodcastEpisode();
+                episode.EpisodeNumber = episodeNumber--;
+                episode.Editor = editor;
+                episode.Title = GetXmlElementValue(entry, "title");
+                episode.Summary = GetXmlElementValue(entry, "description");
+                string link = GetXmlElementValue(entry, "link");
+                if (entry["enclosure"] != null)
+                {
+                    link = GetXmlAttribute(entry["enclosure"], "url");
+                }
+                episode.FileUrl = new Uri(link);
+                string date = GetXmlElementValue(entry, "pubDate");
+                DateTime.TryParse(date, out DateTime pubDate);
+                episode.PublishedDate = pubDate;
+                string durationString = GetXmlElementValue(entry, "itunes:duration");
+                if (int.TryParse(durationString, out int duration))
+                    episode.Duration = TimeSpan.FromSeconds(duration);
+                else if (TimeSpan.TryParse(durationString, out TimeSpan durationTS))
+                    episode.Duration = durationTS;
+                else
+                    episode.Duration = default;
+
+                yield return episode;
+            }
+        }
+
+        private static string GetXmlElementValue(XmlNode parentNode, string elementName)
+        {
+            string value = string.Empty;
+            if (parentNode[elementName] != null)
+                value = parentNode[elementName].InnerText;
+            return value;
+        }
+        private static string GetXmlAttribute(XmlNode xmlNode, string attributeName)
+        {
+            string attribute = string.Empty;
+            if (xmlNode != null && xmlNode.Attributes != null && xmlNode.Attributes[attributeName] != null)
+            {
+                string value = xmlNode.Attributes[attributeName].Value;
+                if (!string.IsNullOrEmpty(value))
+                    attribute = value;
+            }
+            return attribute;
+        }
+
+    }
 }

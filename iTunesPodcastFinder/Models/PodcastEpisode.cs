@@ -2,13 +2,17 @@
 
 namespace iTunesPodcastFinder.Models
 {
+    /// <summary>
+    /// It represents a podcast episode. Properties are self-explanatory.
+    /// </summary>
 	public class PodcastEpisode
-	{
-		public string Title { get; internal set; }
-		public string Editor { get; internal set; }
-		public string Summary { get; internal set; }		
-		public DateTime PublishedDate { get; internal set; }
-		public Uri FileUrl { get; internal set; }
-		public double Duration { get; internal set; }		
-	}
+    {
+        public int EpisodeNumber { get; internal set; }
+        public string Title { get; internal set; }
+        public string Editor { get; internal set; }
+        public string Summary { get; internal set; }
+        public DateTime PublishedDate { get; internal set; }
+        public Uri FileUrl { get; internal set; }
+        public TimeSpan Duration { get; internal set; }
+    }
 }
