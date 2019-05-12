@@ -13,7 +13,7 @@ PM> Install-Package Luandersonn.iTunesPodcastFinder -Version 1.0.0
 - [Search podcasts from iTunes](#search)
 - [Get the list of the most popular podcasts by country and genre](#get-top-podcasts)
 - [Get podcast by iTunes ID](#get-a-podcast-by-itunes-id)
-- [Get podcast episodes from the RSS feed URL](#get-podcasts-episodes-by-rss-feed-link)
+- [Get podcast and episodes from the RSS feed URL](#get-podcasts-and-episodes-by-rss-feed-link)
 
 ## How to use
 
