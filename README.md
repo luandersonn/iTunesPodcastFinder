@@ -88,27 +88,22 @@ Debug.WriteLine($"Editor = {podcast.Editor}");
 Debug.WriteLine($"Genre = {podcast.Genre}");	
 ```
 
-### Get podcasts episodes by RSS feed link
-If you have a RSS feed URL of a podcast...
+### Get podcasts and episodes by RSS feed link
+If you have a RSS feed URL of a podcast and want to get the episodes...
 
 ```C#
-string iTunesID = "1200361736"; // ID from 'The Daily' Podcast
-Podcast podcast = await finder.GetPodcastAsync(iTunesID); // Get 'The Daily' Podcast infos
-string feedUrl = podcast.FeedUrl; //Get 'http://rss.art19.com/the-daily'
+string feedUrl = "http://rss.art19.com/the-daily"
+PodcastRequestResult result = await finder.GetPodcastEpisodesAsync(feedUrl);
 
-```	
-
-...And want to get the episodes...
-
-```C#
-IEnumerable<PodcastEpisode> episodes = await finder.GetPodcastEpisodesAsync(feedUrl);
-foreach(PodcastEpisode episode in episodes)
+Debug.WriteLine($"Podcast name = {result.Podcast.Name}");
+foreach(PodcastEpisode episode in result.Episodes)
 {
     Debug.WriteLine($"Title = {episode.Title}");
     Debug.WriteLine($"Summary = {episode.Summary}");    
     Debug.WriteLine($"Published Date = {episode.PublishedDate}");
-    // In some cases, the duration is not reported by the RSS feed. In these scenarios, the 'Duration' value is zero
-    Debug.WriteLine($"Duration = {TimeSpan.FromSeconds(episode.Duration)}");
+    // In some cases, the duration is not reported by the RSS feed.
+    // In these scenarios, the 'Duration' value is "00:00:00"
+    Debug.WriteLine($"Duration = {episode.Duration}");
 }
 ```	
 ### Dependencies
