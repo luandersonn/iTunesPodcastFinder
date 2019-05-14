@@ -92,14 +92,15 @@ Debug.WriteLine($"Genre = {podcast.Genre}");
 If you have a RSS feed URL of a podcast and want to get the episodes...
 
 ```C#
-string feedUrl = "http://rss.art19.com/the-daily"
+string feedUrl = "http://rss.art19.com/the-daily";
 PodcastRequestResult result = await finder.GetPodcastEpisodesAsync(feedUrl);
 
 Debug.WriteLine($"Podcast name = {result.Podcast.Name}");
-foreach(PodcastEpisode episode in result.Episodes)
+foreach (PodcastEpisode episode in result.Episodes)
 {
+    Debug.WriteLine($"Episode number = {episode.EpisodeNumber}");
     Debug.WriteLine($"Title = {episode.Title}");
-    Debug.WriteLine($"Summary = {episode.Summary}");    
+    Debug.WriteLine($"Summary = {episode.Summary}");
     Debug.WriteLine($"Published Date = {episode.PublishedDate}");
     // In some cases, the duration is not reported by the RSS feed.
     // In these scenarios, the 'Duration' value is "00:00:00"
