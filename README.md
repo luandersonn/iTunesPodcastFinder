@@ -74,14 +74,14 @@ Debug.WriteLine($"Name = {podcast.Name}");      // The Daily
 Debug.WriteLine($"Editor = {podcast.Editor}");	// The New York Times
 Debug.WriteLine($"Genre = {podcast.Genre}");    // News & Politics
 ```	
-You can get the iTunes ID with the pocast link from iTunes using the static method `PodcastFinder.GetItunesID(iTunesLink)`.
+~~You can get the iTunes ID with the pocast link from iTunes using the static method `PodcastFinder.GetItunesID(iTunesLink)`~~
+Podcast class now has iTunesId property.
 
 ```C#
 IEnumerable<Podcast> brazilTopPodcasts = await finder.GetTopPodcastsAsync(PodcastGenre.All, 50, "br");
 Podcast mostPopularPodcast = brazilTopPodcasts.First();
-string iTunesID = PodcastFinder.GetItunesID(mostPopularPodcast.ItunesLink);
 
-Podcast podcast = await finder.GetPodcastAsync(iTunesID);
+Podcast podcast = await finder.GetPodcastAsync(mostPopularPodcast.ItunesId);
 
 Debug.WriteLine($"Name = {podcast.Name}");
 Debug.WriteLine($"Editor = {podcast.Editor}");
