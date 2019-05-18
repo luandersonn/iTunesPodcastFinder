@@ -15,7 +15,7 @@ PM> Install-Package Luandersonn.iTunesPodcastFinder
 - [Get podcast by iTunes ID](#get-a-podcast-by-itunes-id)
 - [Get podcast and episodes from the RSS feed URL](#get-podcasts-and-episodes-by-rss-feed-link)
 
-## How to use
+## Usage
 
 ```C#
 PodcastFinder finder = new PodcastFinder();
