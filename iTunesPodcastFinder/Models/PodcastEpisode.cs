@@ -14,5 +14,6 @@ namespace iTunesPodcastFinder.Models
         public DateTime PublishedDate { get; internal set; }
         public Uri FileUrl { get; internal set; }
         public TimeSpan Duration { get; internal set; }
+        public string InnerXml { get; internal set; }
     }
 }

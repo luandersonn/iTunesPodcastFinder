@@ -55,6 +55,8 @@ namespace iTunesPodcastFinder.Helpers
             podcast.ArtWork = GetXmlElementValue(feedNode, "icon");
             XmlNodeList entries = feedNode.GetElementsByTagName("entry");
             podcast.EpisodesCount = entries.Count;
+            podcast.InnerXml = feedNode.InnerXml;
+            podcast.FeedType = FeedType.Atom;
             return new PodcastRequestResult(podcast, GetAtomEpisodes(entries));
         }
         private static IEnumerable<PodcastEpisode> GetAtomEpisodes(XmlNodeList entries)
@@ -69,6 +71,7 @@ namespace iTunesPodcastFinder.Helpers
                 DateTime.TryParse(GetXmlElementValue(entry, "updated"), out DateTime pub);
                 episode.PublishedDate = pub;
                 episode.FileUrl = new Uri(GetXmlAttribute(entry["link"], "href"));
+                episode.InnerXml = entry.InnerXml;
                 yield return episode;
             }
         }
@@ -84,6 +87,8 @@ namespace iTunesPodcastFinder.Helpers
             podcast.ItunesLink = GetXmlElementValue(channel, "link");
             var entries = channel.GetElementsByTagName("item");
             podcast.EpisodesCount = entries.Count;
+            podcast.InnerXml = channel.InnerXml;
+            podcast.FeedType = FeedType.Rss1;
             return new PodcastRequestResult(podcast, GetRSS1Episodes(entries));
         }
         private static IEnumerable<PodcastEpisode> GetRSS1Episodes(XmlNodeList entries)
@@ -99,6 +104,7 @@ namespace iTunesPodcastFinder.Helpers
                 episode.FileUrl = new Uri(GetXmlElementValue(entry, "link"));
                 DateTime.TryParse(GetXmlElementValue(entry, "pubDate"), out DateTime pubDate);
                 episode.PublishedDate = pubDate;
+                episode.InnerXml = entry.InnerXml;
                 yield return episode;
             }
         }
@@ -117,7 +123,8 @@ namespace iTunesPodcastFinder.Helpers
             podcast.ReleaseDate = pub;
             string image = channel.GetElementsByTagName("itunes:image")?.Item(0)?.Attributes.Item(0)?.Value;
             podcast.Genre = channel.GetElementsByTagName("itunes:category")?.Item(0)?.Attributes.Item(0)?.Value;
-
+            podcast.InnerXml = channel.InnerXml;
+            podcast.FeedType = FeedType.Rss2;
             if (image == "")
             {
                 var imageNodes = channel.GetElementsByTagName("image");
@@ -160,7 +167,7 @@ namespace iTunesPodcastFinder.Helpers
                     episode.Duration = durationTS;
                 else
                     episode.Duration = default;
-
+                episode.InnerXml = entry.InnerXml;
                 yield return episode;
             }
         }

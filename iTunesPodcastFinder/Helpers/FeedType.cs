@@ -1,6 +1,6 @@
 ﻿namespace iTunesPodcastFinder.Helpers
 {
-    internal enum FeedType
+    public enum FeedType
     {
         Atom = 0,
         Rss1 = 1,

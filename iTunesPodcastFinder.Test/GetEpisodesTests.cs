@@ -55,8 +55,10 @@ namespace iTunesPodcastFinder.Test
                 Assert.IsFalse(string.IsNullOrWhiteSpace(episode.Title));
                 Assert.AreEqual(episodesCount--, episode.EpisodeNumber);
                 Assert.IsNotNull(episode.FileUrl);
+                Assert.IsFalse(string.IsNullOrWhiteSpace(episode.InnerXml));
             }
             Assert.AreEqual(requestResult.Episodes.Count(), requestResult.Podcast.EpisodesCount);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(requestResult.Podcast.InnerXml));
         }
     }
 }
