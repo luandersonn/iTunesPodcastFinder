@@ -14,7 +14,7 @@ namespace iTunesPodcastFinder
         private static readonly string base_search_url = @"https://itunes.apple.com/search?term={0}&country={1}&entity=podcast&limit={2}";
         private static readonly string base_lookup_url = @"https://itunes.apple.com/{0}/lookup?id={1}&entity=podcast";
         private static readonly string base_top_url = @"https://itunes.apple.com/{0}/rss/toppodcasts/limit={1}/genre={2}/json";
-
+        private static HttpClient httpClient = new HttpClient();
         /// <summary>
         /// Get a list of iTunes podcasts based on the query term
         /// </summary>
@@ -31,7 +31,7 @@ namespace iTunesPodcastFinder
             if (country == null)
                 throw new ArgumentNullException(nameof(country));
             Uri url = new Uri(string.Format(base_search_url, queryTerm, country, maxItems));
-            string json = await WebRequestAsync(url);
+            string json = await WebRequestAsync(url).ConfigureAwait(false);
             return JsonHelper.DeserializePodcast(json);
         }
 
@@ -49,7 +49,7 @@ namespace iTunesPodcastFinder
                 throw new ArgumentNullException(nameof(country));
 
             Uri url = new Uri(string.Format(base_lookup_url, country, iTunesID));
-            string json = await WebRequestAsync(url);
+            string json = await WebRequestAsync(url).ConfigureAwait(false);
             return JsonHelper.DeserializePodcast(json).FirstOrDefault();
         }
 
@@ -68,7 +68,7 @@ namespace iTunesPodcastFinder
                 throw new ArgumentException("The maximum number of items must be greater than zero", nameof(maxItems));
 
             Uri url = new Uri(string.Format(base_top_url, country, maxItems, (int)genre));
-            string json = await WebRequestAsync(url);
+            string json = await WebRequestAsync(url).ConfigureAwait(false);
             return JsonHelper.DeserializePodcast(json);
         }
 
@@ -95,7 +95,7 @@ namespace iTunesPodcastFinder
                 throw new ArgumentNullException(nameof(feedUrl));
             Uri url = new Uri(feedUrl);
 
-            string xml = await WebRequestAsync(url);
+            string xml = await WebRequestAsync(url).ConfigureAwait(false);
             var result = XmlHelper.ParsePodcast(xml);
             result.Podcast.FeedUrl = feedUrl;
             return result;
@@ -103,12 +103,9 @@ namespace iTunesPodcastFinder
 
         private async Task<string> WebRequestAsync(Uri url)
         {
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var httpResponse = await httpClient.GetAsync(url);
-                httpResponse.EnsureSuccessStatusCode();
-                return await httpResponse.Content.ReadAsStringAsync();
-            }
+            HttpResponseMessage httpResponse = await httpClient.GetAsync(url).ConfigureAwait(false);
+            httpResponse.EnsureSuccessStatusCode();
+            return await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
         }
     }
 }
