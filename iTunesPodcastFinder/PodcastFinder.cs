@@ -96,7 +96,7 @@ namespace iTunesPodcastFinder
             Uri url = new Uri(feedUrl);
 
             string xml = await WebRequestAsync(url).ConfigureAwait(false);
-            var result = XmlHelper.ParsePodcast(xml);
+			PodcastRequestResult result = XmlHelper.ParsePodcast(xml);
             result.Podcast.FeedUrl = feedUrl;
             return result;
         }

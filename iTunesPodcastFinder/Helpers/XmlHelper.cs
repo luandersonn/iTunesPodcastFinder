@@ -1,13 +1,11 @@
 ﻿using iTunesPodcastFinder.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Xml;
 
 namespace iTunesPodcastFinder.Helpers
 {
-    internal static class XmlHelper
+	internal static class XmlHelper
     {
         public static PodcastRequestResult ParsePodcast(string xml)
         {
@@ -127,10 +125,10 @@ namespace iTunesPodcastFinder.Helpers
             podcast.FeedType = FeedType.Rss2;
             if (image == "")
             {
-                var imageNodes = channel.GetElementsByTagName("image");
+				XmlNodeList imageNodes = channel.GetElementsByTagName("image");
                 if (imageNodes.Count > 0)
                 {
-                    var imageNode = imageNodes[0];
+					XmlNode imageNode = imageNodes[0];
                     image = GetXmlElementValue(imageNode, "url");
                 }
             }
@@ -161,13 +159,10 @@ namespace iTunesPodcastFinder.Helpers
                 DateTime.TryParse(date, out DateTime pubDate);
                 episode.PublishedDate = pubDate;
                 string durationString = GetXmlElementValue(entry, "itunes:duration");
-                if (int.TryParse(durationString, out int duration))
-                    episode.Duration = TimeSpan.FromSeconds(duration);
-                else if (TimeSpan.TryParse(durationString, out TimeSpan durationTS))
-                    episode.Duration = durationTS;
-                else
-                    episode.Duration = default;
-                episode.InnerXml = entry.InnerXml;
+                episode.Duration = int.TryParse(durationString, out int duration)
+					? TimeSpan.FromSeconds(duration)
+					: TimeSpan.TryParse(durationString, out TimeSpan durationTS) ? durationTS : (default);
+				episode.InnerXml = entry.InnerXml;
                 yield return episode;
             }
         }
