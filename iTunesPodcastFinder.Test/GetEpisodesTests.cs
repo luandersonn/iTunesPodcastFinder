@@ -37,14 +37,22 @@ namespace iTunesPodcastFinder.Test
             string feed2 = @"http://www.workshop.com.br/itunes/podcast.xml";
             string feed3 = @"https://podcasts.files.bbci.co.uk/p02pc9zn.rss";
             string feed4 = @"http://audio.globoradio.globo.com/podcast/feed/97/mundo-corporativo";
-            string feed5 = "http://feeds.soundcloud.com/users/soundcloud:users:219522981/sounds.rss";
+            string feed5 = @"http://feeds.soundcloud.com/users/soundcloud:users:219522981/sounds.rss";
+			string feed6 = @"https://www.carreirasemfronteiras.com.br/feed/podcast";
+			string feed7 = @"https://feeds.feedburner.com/inglesbasicotodososdias";
+			string feed8 = @"http://forodeteresina.libsyn.com/rss";
+			string feed9 = @"https://feed.podbean.com/gvcast/feed.xml";
 
-            CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed1).Result);
+			CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed1).Result);
             CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed2).Result);
             CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed3).Result);
             CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed4).Result);
             CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed5).Result);
-        }
+			CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed6).Result);
+			CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed7).Result);
+			CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed8).Result);
+			CheckPodcastInfos(finder.GetPodcastEpisodesAsync(feed9).Result);
+		}
 
         private void CheckPodcastInfos(PodcastRequestResult requestResult)
         {
@@ -56,6 +64,7 @@ namespace iTunesPodcastFinder.Test
                 Assert.AreEqual(episodesCount--, episode.EpisodeNumber);
                 Assert.IsNotNull(episode.FileUrl);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(episode.InnerXml));
+				Assert.AreNotEqual(episode.Duration, default(TimeSpan));
             }
             Assert.AreEqual(requestResult.Episodes.Count(), requestResult.Podcast.EpisodesCount);
             Assert.IsFalse(string.IsNullOrWhiteSpace(requestResult.Podcast.InnerXml));

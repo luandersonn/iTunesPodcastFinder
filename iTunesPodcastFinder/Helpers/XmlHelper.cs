@@ -1,6 +1,7 @@
 ﻿using iTunesPodcastFinder.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 namespace iTunesPodcastFinder.Helpers
@@ -159,15 +160,42 @@ namespace iTunesPodcastFinder.Helpers
                 DateTime.TryParse(date, out DateTime pubDate);
                 episode.PublishedDate = pubDate;
                 string durationString = GetXmlElementValue(entry, "itunes:duration");
-                episode.Duration = int.TryParse(durationString, out int duration)
-					? TimeSpan.FromSeconds(duration)
-					: TimeSpan.TryParse(durationString, out TimeSpan durationTS) ? durationTS : (default);
+				TryParseDuration(durationString, out TimeSpan duration);
+				episode.Duration = duration;
 				episode.InnerXml = entry.InnerXml;
                 yield return episode;
             }
         }
 
-        private static string GetXmlElementValue(XmlNode parentNode, string elementName)
+		private static bool TryParseDuration(string input, out TimeSpan output)
+		{
+			try
+			{
+				int[] array = input
+					.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries)
+					.Select(n => int.Parse(n))
+					.ToArray();
+				switch(array.Length)
+				{
+					case 1:
+						output = TimeSpan.FromSeconds(array[0]);
+						return true;
+					case 2:
+						output = TimeSpan.FromMinutes(array[0]) + TimeSpan.FromSeconds(array[1]);
+						return true;
+					default:
+						output = TimeSpan.Parse(input);
+						return true;
+				}			
+			}
+			catch
+			{
+				output = default;
+				return false;
+			}
+		}
+
+		private static string GetXmlElementValue(XmlNode parentNode, string elementName)
         {
             string value = string.Empty;
             if (parentNode[elementName] != null)
