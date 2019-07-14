@@ -11,18 +11,19 @@ namespace iTunesPodcastFinder
 {
     public class PodcastFinder
     {
-        private static readonly string base_search_url = @"https://itunes.apple.com/search?term={0}&country={1}&entity=podcast&limit={2}";
+        private static readonly string base_search_url = @"https://itunes.apple.com/search?term={0}&country={1}&entity=podcast&limit={2}&offset={3}";
         private static readonly string base_lookup_url = @"https://itunes.apple.com/{0}/lookup?id={1}&entity=podcast";
         private static readonly string base_top_url = @"https://itunes.apple.com/{0}/rss/toppodcasts/limit={1}/genre={2}/json";
-        private static HttpClient httpClient = new HttpClient();
-        /// <summary>
-        /// Get a list of iTunes podcasts based on the query term
-        /// </summary>
-        /// <param name="queryTerm">Podcast keyword you want to search for</param>
-        /// <param name="maxItems">Maximum number of items you want to retrieve</param>
-        /// <param name="country">Two-letter country code (ISO 3166-1 alpha-2)</param>		
-        /// <returns>List of podcasts</returns>
-        public async Task<IEnumerable<Podcast>> SearchPodcastsAsync(string queryTerm, int maxItems = 100, string country = "us")
+        public static HttpClient HttpClient { get; set; } = new HttpClient();
+		/// <summary>
+		/// Get a list of iTunes podcasts based on the query term
+		/// </summary>
+		/// <param name="queryTerm">Podcast keyword you want to search for</param>
+		/// <param name="maxItems">Maximum number of items you want to retrieve</param>
+		/// <param name="country">Two-letter country code (ISO 3166-1 alpha-2)</param>		
+		/// <param name="offset">Zero-based offset of results</param>		
+		/// <returns>List of podcasts</returns>
+		public async Task<IEnumerable<Podcast>> SearchPodcastsAsync(string queryTerm, int maxItems = 100, string country = "us", int offset = 0)
         {
             if (queryTerm == null)
                 throw new ArgumentNullException(nameof(queryTerm));
@@ -30,7 +31,7 @@ namespace iTunesPodcastFinder
                 throw new ArgumentException("The maximum number of items must be greater than zero", nameof(maxItems));
             if (country == null)
                 throw new ArgumentNullException(nameof(country));
-            Uri url = new Uri(string.Format(base_search_url, queryTerm, country, maxItems));
+            Uri url = new Uri(string.Format(base_search_url, queryTerm, country, maxItems, offset));
             string json = await WebRequestAsync(url).ConfigureAwait(false);
             return JsonHelper.DeserializePodcast(json);
         }
@@ -103,7 +104,7 @@ namespace iTunesPodcastFinder
 
         private async Task<string> WebRequestAsync(Uri url)
         {
-            HttpResponseMessage httpResponse = await httpClient.GetAsync(url).ConfigureAwait(false);
+            HttpResponseMessage httpResponse = await HttpClient.GetAsync(url).ConfigureAwait(false);
             httpResponse.EnsureSuccessStatusCode();
             return await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
         }

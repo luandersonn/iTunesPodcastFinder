@@ -1,24 +1,19 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Luandersonn.iTunesPodcastFinder</id>
-    <version>2.2.1</version>
+    <id>$id$</id>
+    <version>$version$</version>
     <title>iTunes Podcast Finder and Podcast RSS Feed Parser</title>
-    <authors>Luandersonn Airton</authors>
-    <owners>Luandersonn Airton</owners>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/luandersonn/iTunesPodcastFinder</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/luandersonn/iTunesPodcastFinder/master/iTunesPodcastFinder/iTunes-logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>iTunes Podcast Finder is a .NET Standard 2.0 library that allows you to search for podcasts through the iTunes API and get episodes of podcasts from the RSS feed.</description>
-    <releaseNotes>
-      Get a podcast and episodes from RSS feed URL
-      Async methods use ConfigureAwait and HttpClient is static
-      Added 'InnerXml' and 'FeedType' properties
-      more in https://github.com/luandersonn/iTunesPodcastFinder/commit/183ff538dec56568aa1de6199f49e456f674da5d
-    </releaseNotes>
-    <copyright>Luandersonn Airton - Copyright 2019</copyright>
-    <tags>iTunes Podcast Feed RSS Parser Wrapper</tags>
+    <description>$description$</description>
+    <releaseNotes>$releaseNotes$</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>$tags$</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="12.0.2" />
     </dependencies>
