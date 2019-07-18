@@ -20,6 +20,7 @@ namespace iTunesPodcastFinder.Models
             }
         }
         public string FeedUrl { get; internal set; }
+        public string Website {get; internal set;}
         public DateTime ReleaseDate { get; internal set; }
         public int EpisodesCount { get; internal set; }
         public string ArtWork { get; internal set; }

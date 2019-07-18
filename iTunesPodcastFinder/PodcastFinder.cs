@@ -106,7 +106,15 @@ namespace iTunesPodcastFinder
         {
             HttpResponseMessage httpResponse = await HttpClient.GetAsync(url).ConfigureAwait(false);
             httpResponse.EnsureSuccessStatusCode();
-            return await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-        }
-    }
+			try
+			{
+				return await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+			}
+			catch (Exception)
+			{
+				byte[] bytes = await httpResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+				return System.Text.Encoding.UTF8.GetString(bytes);
+			}
+		}
+	}
 }

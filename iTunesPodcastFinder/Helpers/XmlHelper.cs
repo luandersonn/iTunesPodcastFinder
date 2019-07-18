@@ -83,7 +83,7 @@ namespace iTunesPodcastFinder.Helpers
             Podcast podcast = new Podcast();
             podcast.Name = GetXmlElementValue(channel, "title");
             podcast.Summary = GetXmlElementValue(channel, "description");
-            podcast.ItunesLink = GetXmlElementValue(channel, "link");
+            podcast.Website = GetXmlElementValue(channel, "link");
             var entries = channel.GetElementsByTagName("item");
             podcast.EpisodesCount = entries.Count;
             podcast.InnerXml = channel.InnerXml;
@@ -116,7 +116,7 @@ namespace iTunesPodcastFinder.Helpers
             Podcast podcast = new Podcast();
             podcast.Name = GetXmlElementValue(channel, "title");
             podcast.Editor = channel.GetElementsByTagName("itunes:author")?.Item(0)?.InnerText;
-            podcast.ItunesLink = GetXmlElementValue(channel, "link");
+            podcast.Website = GetXmlElementValue(channel, "link");
             podcast.Summary = GetXmlElementValue(channel, "description");
             DateTime.TryParse(GetXmlElementValue(channel, "pubDate"), out DateTime pub);
             podcast.ReleaseDate = pub;

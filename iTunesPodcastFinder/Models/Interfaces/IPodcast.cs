@@ -7,6 +7,7 @@ namespace iTunesPodcastFinder.Models
         string Name { get; }
         string Summary { get; }
         string Editor { get; }
+		string Website { get; }
         string ItunesLink { get; }
         string ItunesId { get; }
         string FeedUrl { get; }

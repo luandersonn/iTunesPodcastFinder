@@ -8,16 +8,11 @@
     <Copyright>Luandersonn Airton</Copyright>
     <PackageProjectUrl>https://github.com/luandersonn/iTunesPodcastFinder</PackageProjectUrl>
     <PackageTags>Wrapper, iTunes, RSS, Feed, Parser, Podcast</PackageTags>
-    <PackageReleaseNotes>Features:
-- Added new search parameter: offset
-- HttpClient of PodcastFinder is static and public
-
-Bugs fixed:
-- The property 'PodcastEpisode.Duration' is parsed correctly</PackageReleaseNotes>
+    <PackageReleaseNotes>Added Website property</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.2.2</Version>
-    <FileVersion>2.2.2.0</FileVersion>
-    <AssemblyVersion>2.2.2.0</AssemblyVersion>
+    <Version>2.2.3</Version>
+    <FileVersion>2.2.3.0</FileVersion>
+    <AssemblyVersion>2.2.3.0</AssemblyVersion>
     <Authors>Luandersonn Airton</Authors>
     <Company>Luandersonn Airton</Company>
     <RepositoryUrl>https://github.com/luandersonn/iTunesPodcastFinder</RepositoryUrl>
